@@ -27,6 +27,7 @@ straight from the command line:
 Or from your Ruby app, you may:
 
 ```ruby
+require 'sgpass'
 SGPass.generate('hunter2', 'http://www.facebook.com')
 ```
 
