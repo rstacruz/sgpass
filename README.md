@@ -29,3 +29,10 @@ Or from your Ruby app, you may:
 ```ruby
 SGPass.generate('hunter2', 'http://www.facebook.com')
 ```
+
+## Acknowledgements
+
+
+Gem by [Rico Sta. Cruz](http://www.ricostacruz.com), based on the original
+[supergenpass.com](http://www.supergenpass.com) JavaScript version.
+
