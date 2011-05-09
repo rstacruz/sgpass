@@ -1,0 +1,38 @@
+#!/usr/bin/env ruby
+require File.expand_path('../../lib/sgpass', __FILE__)
+
+def print_usage(options={})
+  full = options[:full]
+  cmd  = options[:cmd] || File.basename($0)
+
+  $stderr.write "Usage: #{cmd} URL [PASSWORD]\n"
+  if full
+    $stderr.write "\n"
+    $stderr.write "Generates a site-specific password for the given URL and master password.\n"
+    $stderr.write "If no password is given, you will be prompted for one.\n"
+    $stderr.write "\n"
+    $stderr.write "Examples:\n"
+    $stderr.write "  #{cmd} twitter.com\n"
+    $stderr.write "  #{cmd} facebook.com HelloThere20\n"
+    $stderr.write "  #{cmd} http://admin.site.com/page.html hunter2\n"
+  end
+end
+
+if ARGV == ['--help'] || ARGV == ['-h'] || ARGV.empty?
+  print_usage :full => true
+
+elsif ARGV.size == 1
+  uri, _ = ARGV
+  $stderr.write "Password: "
+  passwd = STDIN.readline.strip
+
+  puts SGPass.generate(passwd, uri)
+
+elsif ARGV.size != 2
+  print_usage
+  exit 256
+
+else
+  uri, passwd = ARGV
+  puts SGPass.generate(passwd, uri)
+end
