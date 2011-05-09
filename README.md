@@ -28,11 +28,20 @@ Or from your Ruby app, you may:
 
 ```ruby
 require 'sgpass'
-SGPass.generate('hunter2', 'http://www.facebook.com')
+str = SGPass.generate('hunter2', 'http://www.facebook.com')  #=> "vXzettvkI2"
 ```
 
-## Acknowledgements
+## Tips and tricks
 
+In Mac OSX, you pipe it to `pbcopy` to copy the password to the clipboard.
+
+    $ sgpass facebook.com | pbcopy
+
+Or on Linux:
+
+    $ sgpass facebook.com | xsel -b -i
+
+## Acknowledgements
 
 Gem by [Rico Sta. Cruz](http://www.ricostacruz.com), based on the original
 [supergenpass.com](http://www.supergenpass.com) JavaScript version.
