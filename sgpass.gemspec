@@ -11,4 +11,5 @@ Gem::Specification.new do |s|
   s.executables = ["sgpass"]
 
   s.add_dependency 'highline', '~> 1.6.2'
+  s.add_dependency 'clipboard', '~> 0.9.9'
 end
