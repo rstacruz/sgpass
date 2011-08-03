@@ -26,7 +26,7 @@ elsif ARGV.size == 1
   $stderr.write "Password: "
   passwd = STDIN.readline.strip
 
-  puts SGPass.generate(passwd, uri)
+  print SGPass.generate(passwd, uri)
 
 elsif ARGV.size != 2
   print_usage
@@ -34,5 +34,5 @@ elsif ARGV.size != 2
 
 else
   uri, passwd = ARGV
-  puts SGPass.generate(passwd, uri)
+  print SGPass.generate(passwd, uri)
 end
