@@ -1,6 +1,6 @@
 # SuperGenPass for Ruby
 
-## Usage
+## Command line usage
 
 Install it:
 
@@ -9,20 +9,16 @@ Install it:
 To generate a password for a site, use:
 
     $ sgpass facebook.com
-    Enter password: [redacted]
+    Password: ******
     h8GCua3DxC
 
-You may even pass full URL's and `sgpass` will figure it out:
+To copy it to clipboard:
 
-    $ sgpass http://www.facebook.com/profile.php
-    Enter password: [redacted]
-    h8GCua3DxC
+    $ sgpass facebook.com -c
+    Password: ******
+    Done. Your password has been copied to the clipboard.
 
-...These will prompt you for your master password. If you want to do it 
-straight from the command line:
-
-    $ sgpass facebook.com MyPassword
-    h8GCua3DxC
+## Ruby usage
 
 Or from your Ruby app, you may:
 
@@ -31,15 +27,19 @@ require 'sgpass'
 str = SGPass.generate('hunter2', 'http://www.facebook.com')  #=> "vXzettvkI2"
 ```
 
-## Tips and tricks
+## More usage notes
 
-In Mac OSX, you pipe it to `pbcopy` to copy the password to the clipboard.
+You may even pass full URL's and `sgpass` will figure it out:
 
-    $ sgpass facebook.com | pbcopy
+    $ sgpass http://www.facebook.com/profile.php
+    Password: ******
+    h8GCua3DxC
 
-Or on Linux:
+If you don't want to to be asked for your password, pass it straight from the 
+command line:
 
-    $ sgpass facebook.com | xsel -b -i
+    $ sgpass facebook.com MyPassword
+    h8GCua3DxC
 
 ## Acknowledgements
 
