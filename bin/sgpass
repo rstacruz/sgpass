@@ -6,11 +6,15 @@ def print_usage(options={})
   full = options[:full]
   cmd  = options[:cmd] || File.basename($0)
 
-  $stderr.write "Usage: #{cmd} URL [PASSWORD]\n"
+  $stderr.write "Usage: #{cmd} URL [PASSWORD] [-c] [-f]\n"
   if full
     $stderr.write "\n"
     $stderr.write "Generates a site-specific password for the given URL and master password.\n"
     $stderr.write "If no password is given, you will be prompted for one.\n"
+    $stderr.write "\n"
+    $stderr.write "Options:\n"
+    $stderr.write "  -c, --copy         Copies the result to the clipboard."
+    $stderr.write "  -f, --fast         Prompts password just once instead of twice."
     $stderr.write "\n"
     $stderr.write "Examples:\n"
     $stderr.write "  #{cmd} twitter.com\n"
@@ -19,14 +23,49 @@ def print_usage(options={})
   end
 end
 
+$options = {
+  :copy => ARGV.delete('-c') || ARGV.delete('--copy'),
+  :fast => ARGV.delete('-f') || ARGV.delete('--fast'),
+}
+
+def output(str)
+  if $options[:copy]
+    require 'clipboard'
+    Clipboard.copy str
+    $stderr.write "Done. Your password is in the clipboard.\n"
+  else
+    puts str
+  end
+end
+
+def ask_passwd
+  ask = lambda { |message| HighLine.new.ask(message) { |q| q.echo = '*' } }
+
+  if $options[:fast]
+    ask.call "Password: "
+  else
+    one = 0
+    two = nil
+
+    while one != two
+      $stderr.write "Passwords don't match. Try again.\n\n"  if one != 0
+
+      one = ask.call "Password: "
+      two = ask.call "Repeat:   "
+    end
+
+    one
+  end
+end
+
 if ARGV == ['--help'] || ARGV == ['-h'] || ARGV.empty?
   print_usage :full => true
 
 elsif ARGV.size == 1
   uri, _ = ARGV
-  passwd = HighLine.new.ask("Password: ") { |q| q.echo = '*' }
+  passwd = ask_passwd
 
-  print SGPass.generate(passwd, uri)
+  output SGPass.generate(passwd, uri)
 
 elsif ARGV.size != 2
   print_usage
@@ -34,5 +73,5 @@ elsif ARGV.size != 2
 
 else
   uri, passwd = ARGV
-  print SGPass.generate(passwd, uri)
+  output SGPass.generate(passwd, uri)
 end
