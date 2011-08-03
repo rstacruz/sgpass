@@ -9,4 +9,6 @@ Gem::Specification.new do |s|
   s.homepage = "http://github.com/rstacruz/sgpass"
   s.files = Dir["{lib,bin,test}/**/*", "*.md", "Rakefile"].reject { |f| File.directory?(f) }
   s.executables = ["sgpass"]
+
+  s.add_dependency 'highline', '~> 1.6.2'
 end

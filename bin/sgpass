@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 require File.expand_path('../../lib/sgpass', __FILE__)
+require 'highline'
 
 def print_usage(options={})
   full = options[:full]
@@ -23,8 +24,7 @@ if ARGV == ['--help'] || ARGV == ['-h'] || ARGV.empty?
 
 elsif ARGV.size == 1
   uri, _ = ARGV
-  $stderr.write "Password: "
-  passwd = STDIN.readline.strip
+  passwd = HighLine.new.ask("Password: ") { |q| q.echo = '*' }
 
   print SGPass.generate(passwd, uri)
 
