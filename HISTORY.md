@@ -1,3 +1,9 @@
+v0.1.1 - Aug 03, 2011
+---------------------
+
+### Fixed:
+  * Fixed formatting in the help output.
+
 v0.1.0 - Aug 03, 2011
 ---------------------
 
