@@ -2,6 +2,10 @@
 require File.expand_path('../../lib/sgpass', __FILE__)
 require 'highline'
 
+class << ARGV
+  def extract(what)   i = index(what) and slice!(i, 2)[1] end;
+end
+
 def print_usage(options={})
   full = options[:full]
   cmd  = options[:cmd] || File.basename($0)
@@ -15,6 +19,7 @@ def print_usage(options={})
     $stderr.write "Options:\n"
     $stderr.write "  -c, --copy         Copies the result to the clipboard.\n"
     $stderr.write "  -f, --fast         Prompts password just once instead of twice.\n"
+    $stderr.write "  -l [length]        Change the password length. (default: 10)\n"
     $stderr.write "\n"
     $stderr.write "Examples:\n"
     $stderr.write "  #{cmd} twitter.com\n"
@@ -26,6 +31,7 @@ end
 $options = {
   :copy => ARGV.delete('-c') || ARGV.delete('--copy'),
   :fast => ARGV.delete('-f') || ARGV.delete('--fast'),
+  :length => ARGV.extract('-l') || ARGV.extract('--length') || 10
 }
 
 def output(str)
@@ -62,10 +68,15 @@ if ARGV == ['--help'] || ARGV == ['-h'] || ARGV.empty?
   print_usage :full => true
 
 elsif ARGV.size == 1
+  unless (4..24).include? $options[:length].to_i
+    puts "Length must be between 4 and 24."
+    exit 256
+  end
+
   uri, _ = ARGV
   passwd = ask_passwd
 
-  output SGPass.generate(passwd, uri)
+  output SGPass.generate(passwd, uri, length: $options[:length])
 
 elsif ARGV.size != 2
   print_usage

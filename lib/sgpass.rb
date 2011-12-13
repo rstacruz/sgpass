@@ -17,6 +17,9 @@ module SGPass
   # Generates a password.
   def self.generate(password, domain, options={})
     length   = (options[:length] || 10).to_i
+
+    raise StandardError, "Length must be between 4 and 24."  unless (4..24).include?(length)
+
     domain   = get_top_domain(domain, !(options[:tld] == false))
 
     str = "#{password}:#{domain}"
